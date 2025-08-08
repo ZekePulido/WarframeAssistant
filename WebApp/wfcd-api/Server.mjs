@@ -38,9 +38,16 @@ app.get('/items/category/:categoryName', (req, res) => {
     if (!itemsInCategory) {
         return res.status(404).json({ error: 'Category not found' });
     }
+    
+    const slimmed = itemsInCategory.map(({ name, category, drops }) => ({
+        name,
+        category,
+        drops
+    }));
 
-    res.json(itemsInCategory);Ï
+    res.json(slimmed);
 });
+
 
 app.listen(port, () => {
     console.log(`WFCD API running at http://localhost:${port}`);

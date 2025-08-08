@@ -33,7 +33,7 @@ public class HomeController : Controller
         return View("Result", model: total); // Looks for Views/Home/Result.cshtml
     }
     
-    public async Task<IActionResult> Mod(string search, string category)
+    public async Task<IActionResult> Mods(string search)
     {
         var categoryName = "Mods";
         var items = await _wfcdService.GetItemsByCategoryAsync(categoryName);
