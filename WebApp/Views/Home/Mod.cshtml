@@ -1,0 +1,61 @@
+﻿@model Dictionary<string, List<WebApp.Models.WarframeItem>>
+
+@{
+    ViewData["Title"] = "Warframe Mods";
+    var searchTerm = ViewData["Search"] as string ?? "";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-primary">@ViewData["Title"]</h1>
+
+    <form method="get" asp-action="Privacy" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search mod name..." value="@searchTerm" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    @if (!Model.Any() || Model.Values.All(list => !list.Any()))
+    {
+        <div class="alert alert-warning" role="alert">
+            <em>No results found.</em>
+        </div>
+    }
+    else
+    {
+        @foreach (var category in Model)
+        {
+            <div class="mb-5">
+                <h2 class="text-secondary border-bottom pb-2">@category.Key</h2>
+
+                @foreach (var item in category.Value)
+                {
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">@item.Name</h5>
+
+                            @if (item.Drops != null && item.Drops.Count > 0)
+                            {
+                                <p class="mb-2"><strong>Drops:</strong></p>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var drop in item.Drops)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Location:</strong> @drop.Location <br />
+                                            <strong>Chance:</strong> @(drop.Chance.HasValue ? String.Format("{0:P0}", drop.Chance) : "N/A") <br />
+                                            <strong>Rarity:</strong> @drop.Rarity
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted"><em>No drop data available.</em></p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

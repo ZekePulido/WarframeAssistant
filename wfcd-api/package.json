@@ -1,0 +1,16 @@
+{
+  "name": "wfcd-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@wfcd/items": "^1.1270.825",
+    "express": "^5.1.0"
+  }
+}
