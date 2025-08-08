@@ -45,6 +45,12 @@ public class HomeController : Controller
                 .ToList();
         }
 
+        // Log Name and ImageName of each item for debugging
+        foreach (var item in items)
+        {
+            Console.WriteLine($"Item Name: {item.Name}, ImageName: {item.ImageName ?? "(null or empty)"}");
+        }
+
         var model = new Dictionary<string, List<WarframeItem>>
         {
             { categoryName, items }
@@ -53,4 +59,27 @@ public class HomeController : Controller
         ViewData["Search"] = search;
         return View(model);
     }
+
+    
+    public async Task<IActionResult> Warframe(string search)
+    {
+        ViewData["Search"] = search;
+
+        var items = await _wfcdService.GetItemsByCategoryAsync("Warframes");
+
+        if (!string.IsNullOrEmpty(search))
+        {
+            items = items
+                .Where(item => item.Name != null && item.Name.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        var model = new Dictionary<string, List<WarframeItem>>
+        {
+            { "Warframe", items }
+        };
+
+        return View(model);
+    }
+
 }

@@ -31,27 +31,44 @@
                 @foreach (var item in category.Value)
                 {
                     <div class="card mb-3 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-dark">@item.Name</h5>
+                        <div class="row g-0">
+                            <div class="col-md-2 text-center p-2">
+                                @if (!string.IsNullOrEmpty(item.ImageName))
+                                {
+                                    <img src="@($"https://cdn.warframestat.us/img/{item.ImageName}")"
+                                         alt="@item.Name"
+                                         class="img-fluid rounded"
+                                         style="max-height: 120px; object-fit: contain;" />
+                                }
+                                else
+                                {
+                                    <div class="text-muted small">No image</div>
+                                }
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">@item.Name</h5>
 
-                            @if (item.Drops != null && item.Drops.Count > 0)
-                            {
-                                <p class="mb-2"><strong>Drops:</strong></p>
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var drop in item.Drops)
+                                    @if (item.Drops != null && item.Drops.Count > 0)
                                     {
-                                        <li class="list-group-item">
-                                            <strong>Location:</strong> @drop.Location <br />
-                                            <strong>Chance:</strong> @(drop.Chance.HasValue ? String.Format("{0:P0}", drop.Chance) : "N/A") <br />
-                                            <strong>Rarity:</strong> @drop.Rarity
-                                        </li>
+                                        <p class="mb-2"><strong>Drops:</strong></p>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var drop in item.Drops)
+                                            {
+                                                <li class="list-group-item">
+                                                    <strong>Location:</strong> @drop.Location <br />
+                                                    <strong>Chance:</strong> @(drop.Chance.HasValue ? String.Format("{0:P0}", drop.Chance) : "N/A") <br />
+                                                    <strong>Rarity:</strong> @drop.Rarity
+                                                </li>
+                                            }
+                                        </ul>
                                     }
-                                </ul>
-                            }
-                            else
-                            {
-                                <p class="text-muted"><em>No drop data available.</em></p>
-                            }
+                                    else
+                                    {
+                                        <p class="text-muted"><em>No drop data available.</em></p>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
