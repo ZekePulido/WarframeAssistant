@@ -17,7 +17,7 @@ public class WfcdService
         var url = $"http://localhost:3001/items/category/{category}";
         var response = await _httpClient.GetAsync(url);
 
-        response.EnsureSuccessStatusCode(); // Will throw if not 200 OK
+        response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync();
 
@@ -28,4 +28,5 @@ public class WfcdService
 
         return items;
     }
+
 }

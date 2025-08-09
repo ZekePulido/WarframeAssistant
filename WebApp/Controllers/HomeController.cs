@@ -26,13 +26,6 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
     
-    [HttpPost]
-    public IActionResult SubmitForm(int first, int second)
-    {
-        int total = first + second;
-        return View("Result", model: total); // Looks for Views/Home/Result.cshtml
-    }
-    
     public async Task<IActionResult> Mods(string search)
     {
         var categoryName = "Mods";
@@ -45,12 +38,6 @@ public class HomeController : Controller
                 .ToList();
         }
 
-        // Log Name and ImageName of each item for debugging
-        foreach (var item in items)
-        {
-            Console.WriteLine($"Item Name: {item.Name}, ImageName: {item.ImageName ?? "(null or empty)"}");
-        }
-
         var model = new Dictionary<string, List<WarframeItem>>
         {
             { categoryName, items }
@@ -61,25 +48,33 @@ public class HomeController : Controller
     }
 
     
-    public async Task<IActionResult> Warframe(string search)
+    public async Task<IActionResult> Relics(string search)
     {
         ViewData["Search"] = search;
 
-        var items = await _wfcdService.GetItemsByCategoryAsync("Warframes");
+        var items = await _wfcdService.GetItemsByCategoryAsync("Relics");
 
         if (!string.IsNullOrEmpty(search))
         {
             items = items
-                .Where(item => item.Name != null && item.Name.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .Where(item => 
+                    (item.Name != null && item.Name.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (item.Rewards != null && item.Rewards.Any(r => 
+                        r.Item != null && 
+                        r.Item.Name != null && 
+                        r.Item.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
+                    ))
+                )
                 .ToList();
         }
 
         var model = new Dictionary<string, List<WarframeItem>>
         {
-            { "Warframe", items }
+            { "Relics", items }
         };
 
         return View(model);
     }
+
 
 }

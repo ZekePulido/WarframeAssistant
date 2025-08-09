@@ -39,10 +39,13 @@ app.get('/items/category/:categoryName', (req, res) => {
         return res.status(404).json({ error: 'Category not found' });
     }
     
-    const slimmed = itemsInCategory.map(({ name, imageName, category, drops }) => ({
+    const slimmed = itemsInCategory.map(({ name, vaulted, imageName, levelStats, rewards, category, drops }) => ({
         name,
+        levelStats,
         imageName,
+        rewards,
         category,
+        vaulted,
         drops
     }));
 

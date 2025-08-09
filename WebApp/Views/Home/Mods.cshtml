@@ -67,6 +67,22 @@
                                     {
                                         <p class="text-muted"><em>No drop data available.</em></p>
                                     }
+                                    <br />
+                                    @if (item.LevelStats != null)
+                                    {
+                                        <p class="mb-2"><strong>Level Stats:</strong></p>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var level in item.LevelStats)
+                                            {
+                                                @foreach (var stat in level.Stats)
+                                                {
+                                                    <li class="list-group-item">
+                                                        @stat
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    }
                                 </div>
                             </div>
                         </div>

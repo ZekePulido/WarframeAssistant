@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace WebApp.Models
@@ -10,12 +11,42 @@ namespace WebApp.Models
         
         [JsonPropertyName("imageName")]
         public string ImageName { get; set; }
+        
+        [JsonPropertyName("levelStats")]
+        public List<LevelStat> LevelStats { get; set; }
+
+        [JsonPropertyName("rewards")]
+        public List<Reward> Rewards { get; set; }
+        
+        [JsonPropertyName("vaulted")]
+        
+        public Boolean Vaulted { get; set; }
     }
 
     public class Drop
     {
         public string Location { get; set; }
-        public double? Chance { get; set; } // 0.25 means 25%
+        public double? Chance { get; set; }
         public string Rarity { get; set; }
+    }
+
+    public class LevelStat
+    {
+        public List<string> Stats { get; set; }
+    }
+
+    public class Reward
+    {
+        public string Rarity { get; set; }
+        public double Chance { get; set; }
+
+        [JsonPropertyName("item")]
+        public RewardItem Item { get; set; }
+    }
+
+    public class RewardItem
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
     }
 }

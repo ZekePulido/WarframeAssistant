@@ -1,14 +1,14 @@
 @model Dictionary<string, List<WebApp.Models.WarframeItem>>
 
 @{
-    ViewData["Title"] = "Warframe Information";
+    ViewData["Title"] = "Relic Information";
     var searchTerm = ViewData["Search"] as string ?? "";
 }
 
 <div class="container mt-4">
     <h1 class="mb-4 text-primary">@ViewData["Title"]</h1>
 
-    <form method="get" asp-action="Warframe" class="mb-4">
+    <form method="get" asp-action="Relics" class="mb-4">
         <div class="input-group mb-2">
             <input type="text" name="search" class="form-control" placeholder="Search item name..." value="@searchTerm" />
         </div>
@@ -30,27 +30,37 @@
 
                 @foreach (var item in category.Value)
                 {
+                    if (item.Vaulted)
+                    {
+                        continue;  
+                    }
                     <div class="card mb-3 shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">@item.Name</h5>
-
-                            @if (item.Drops != null && item.Drops.Count > 0)
+                            @if (!string.IsNullOrEmpty(item.ImageName))
                             {
-                                <p><strong>Drops:</strong></p>
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var drop in item.Drops)
-                                    {
-                                        <li class="list-group-item">
-                                            <strong>Location:</strong> @drop.Location <br />
-                                            <strong>Chance:</strong> @(drop.Chance.HasValue ? String.Format("{0:P0}", drop.Chance) : "N/A") <br />
-                                            <strong>Rarity:</strong> @drop.Rarity
-                                        </li>
-                                    }
-                                </ul>
+                                <img src="@($"https://cdn.warframestat.us/img/{item.ImageName}")"
+                                     alt="@item.Name"
+                                     class="img-fluid rounded"
+                                     style="max-height: 120px; object-fit: contain;" />
                             }
                             else
                             {
-                                <p class="text-muted"><em>No drop data available.</em></p>
+                                <div class="text-muted small">No image</div>
+                            }
+                            @if (item.Rewards != null && item.Rewards.Count > 0)
+                            {
+                                <p><strong>Rewards:</strong></p>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var reward in item.Rewards)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Item:</strong> @reward.Item.Name <br />
+                                            <strong>Rarity:</strong> @reward.Rarity <br />
+                                            <strong>Chance:</strong> @reward.Chance%
+                                        </li>
+                                    }
+                                </ul>
                             }
                         </div>
                     </div>
